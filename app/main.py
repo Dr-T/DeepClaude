@@ -17,6 +17,9 @@ load_dotenv()
 
 app = FastAPI(title="DeepClaude API")
 
+# 导出ASGI应用实例，用于Vercel Serverless Functions
+app_instance = app
+
 # 从环境变量获取 CORS配置, API 密钥、地址以及模型名称
 ALLOW_ORIGINS = os.getenv("ALLOW_ORIGINS", "*")
 
