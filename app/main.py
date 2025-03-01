@@ -156,6 +156,9 @@ async def chat_completions(request: Request):
                     claude_model=claude_model,
                 )
         else:
+            # 获取模型id, 判断是否使用请求体中的模型id, 否则使用环境变量中的模型id
+            body_target_model = body.get("model", "claude-3-5-sonnet-20240620")
+            target_model = ENV_OPENAI_COMPOSITE_MODEL if ENV_OPENAI_COMPOSITE_MODEL != "" else body_target_model
             # 使用 OpenAI 兼容组合模型
             if stream:
                 return StreamingResponse(
@@ -163,7 +166,7 @@ async def chat_completions(request: Request):
                         messages=messages,
                         model_arg=model_arg[:4],
                         deepseek_model=DEEPSEEK_MODEL,
-                        target_model=OPENAI_COMPOSITE_MODEL,
+                        target_model=target_model,  # 使用动态设置的target_model
                     ),
                     media_type="text/event-stream",
                 )
@@ -172,7 +175,7 @@ async def chat_completions(request: Request):
                     messages=messages,
                     model_arg=model_arg[:4],
                     deepseek_model=DEEPSEEK_MODEL,
-                    target_model=OPENAI_COMPOSITE_MODEL,
+                    target_model=target_model,  # 使用动态设置的target_model
                 )
 
     except Exception as e:
