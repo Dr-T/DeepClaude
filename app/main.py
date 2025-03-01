@@ -158,7 +158,7 @@ async def chat_completions(request: Request):
         else:
             # 获取模型id, 判断是否使用请求体中的模型id, 否则使用环境变量中的模型id
             body_target_model = body.get("model", "claude-3-5-sonnet-20240620")
-            target_model = ENV_OPENAI_COMPOSITE_MODEL if ENV_OPENAI_COMPOSITE_MODEL != "" else body_target_model
+            target_model = ENV_OPENAI_COMPOSITE_MODEL if OPENAI_COMPOSITE_MODEL != "" else body_target_model
             # 使用 OpenAI 兼容组合模型
             if stream:
                 return StreamingResponse(
